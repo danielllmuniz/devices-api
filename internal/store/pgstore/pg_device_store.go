@@ -61,7 +61,7 @@ func (s *PGDeviceStore) PatchDevice(ctx context.Context, id int32, name, brand s
 		ID:      id,
 		Column2: name,
 		Column3: brand,
-		Column4: state,
+		Column4: DeviceState(state),
 	})
 	if err != nil {
 		return store.Device{}, err

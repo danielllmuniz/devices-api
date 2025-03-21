@@ -205,7 +205,7 @@ const patchDevice = `-- name: PatchDevice :one
 UPDATE devices
 SET name = COALESCE(NULLIF($2, ''), name),
     brand = COALESCE(NULLIF($3, ''), brand),
-    state = COALESCE(NULLIF($4, ''), state)
+    state = CASE WHEN $4 = '' THEN state ELSE $4::device_state END
 WHERE id = $1
 RETURNING id, name, brand, state, created_at
 `
