@@ -11,10 +11,11 @@ func (api *Api) BindRoutes() {
 	api.Router.Route("/api", func(r chi.Router) {
 		r.Route("/v1", func(r chi.Router) {
 			r.Post("/devices", api.handleCreateDevice)
-			// r.Get("/devices", api.handleListDevices)
-			// r.Get("/devices/{id}", api.handleGetDevice)
-			// r.Patch("/devices/{id}", api.handlePatchDevice)
-			// r.Delete("/devices/{id}", api.handleDeleteDevice)
+			r.Get("/devices", api.handleGetAllDevices)
+			r.Get("/devices/{device_id}", api.handleGetDevice)
+			r.Patch("/devices/{device_id}", api.handlePatchDevice)
+			r.Delete("/devices/{device_id}", api.handleDeleteDevice)
+			r.Put("/devices/{device_id}", api.handleUpdateDevice)
 		})
 	})
 }

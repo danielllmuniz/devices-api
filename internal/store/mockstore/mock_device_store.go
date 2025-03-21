@@ -124,6 +124,19 @@ func (m *MockDeviceStore) GetDevicesByState(ctx context.Context, state store.Dev
 	return result, nil
 }
 
+func (m *MockDeviceStore) GetDevicesByBrandAndState(ctx context.Context, brand string, state store.DeviceState) ([]store.Device, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	var result []store.Device
+	for _, device := range m.devices {
+		if device.Brand == brand && device.State == state {
+			result = append(result, device)
+		}
+	}
+	return result, nil
+}
+
 func (m *MockDeviceStore) DeleteDevice(ctx context.Context, id int32) (int32, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

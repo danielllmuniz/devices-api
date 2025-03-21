@@ -27,3 +27,7 @@ migrate_rollback: ## Rollback migrations
 ## Generate code using sqlc
 queries_run: ## Run sqlc generate
 	cd internal/store/pgstore/ && sqlc generate -f ./sqlc.yaml
+
+## Run tests
+test: ## Run tests
+	go test -v ./...

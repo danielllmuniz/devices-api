@@ -29,5 +29,6 @@ type DeviceStore interface {
 	GetAllDevices(ctx context.Context) ([]Device, error)
 	GetDevicesByBrand(ctx context.Context, brand string) ([]Device, error)
 	GetDevicesByState(ctx context.Context, state DeviceState) ([]Device, error)
+	GetDevicesByBrandAndState(ctx context.Context, brand string, state DeviceState) ([]Device, error)
 	DeleteDevice(ctx context.Context, id int32) (int32, error)
 }

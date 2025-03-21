@@ -170,7 +170,7 @@ func TestGetAllDevices(t *testing.T) {
 		_, _ = svc.CreateDevice(ctx, "Device2", "BrandY", store.DeviceStateAvailable)
 		_, _ = svc.CreateDevice(ctx, "Device3", "BrandY", store.DeviceStateAvailable)
 
-		devices, err := svc.GetAllDevices(ctx)
+		devices, err := svc.GetAllDevices(ctx, "", "")
 		assert.NoError(t, err)
 		assert.Len(t, devices, 3)
 	})

@@ -71,12 +71,15 @@ func (s *DeviceService) GetDeviceByID(ctx context.Context, id int32) (store.Devi
 	return device, nil
 }
 
-func (s *DeviceService) GetAllDevices(ctx context.Context) ([]store.Device, error) {
-	device, err := s.Store.GetAllDevices(ctx)
-	if err != nil {
-		return []store.Device{}, ErrDeviceNotFound
+func (s *DeviceService) GetAllDevices(ctx context.Context, brand string, state store.DeviceState) ([]store.Device, error) {
+	if brand != "" && state != "" {
+		return s.Store.GetDevicesByBrandAndState(ctx, brand, state)
+	} else if brand != "" {
+		return s.Store.GetDevicesByBrand(ctx, brand)
+	} else if state != "" {
+		return s.Store.GetDevicesByState(ctx, state)
 	}
-	return device, nil
+	return s.Store.GetAllDevices(ctx)
 }
 
 func (s *DeviceService) GetDevicesByBrand(ctx context.Context, brand string) ([]store.Device, error) {

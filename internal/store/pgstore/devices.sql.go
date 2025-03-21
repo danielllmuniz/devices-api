@@ -130,6 +130,44 @@ func (q *Queries) GetDevicesByBrand(ctx context.Context, brand string) ([]Device
 	return items, nil
 }
 
+const getDevicesByBrandAndState = `-- name: GetDevicesByBrandAndState :many
+SELECT id, name, brand, state, created_at
+FROM devices
+WHERE brand = $1 AND state = $2
+ORDER BY created_at DESC
+`
+
+type GetDevicesByBrandAndStateParams struct {
+	Brand string      `json:"brand"`
+	State DeviceState `json:"state"`
+}
+
+func (q *Queries) GetDevicesByBrandAndState(ctx context.Context, arg GetDevicesByBrandAndStateParams) ([]Device, error) {
+	rows, err := q.db.Query(ctx, getDevicesByBrandAndState, arg.Brand, arg.State)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Device
+	for rows.Next() {
+		var i Device
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Brand,
+			&i.State,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getDevicesByState = `-- name: GetDevicesByState :many
 SELECT id, name, brand, state, created_at
 FROM devices

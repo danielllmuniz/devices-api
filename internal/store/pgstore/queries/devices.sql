@@ -41,6 +41,12 @@ FROM devices
 WHERE state = $1
 ORDER BY created_at DESC;
 
+-- name: GetDevicesByBrandAndState :many
+SELECT id, name, brand, state, created_at
+FROM devices
+WHERE brand = $1 AND state = $2
+ORDER BY created_at DESC;
+
 -- name: DeleteDevice :one
 DELETE FROM devices
 WHERE id = $1
