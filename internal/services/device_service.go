@@ -56,7 +56,7 @@ func (s *DeviceService) PatchDevice(ctx context.Context, id int32, name, brand s
 		return store.Device{}, ErrDeviceInUse
 	}
 
-	deviceUpdated, err := s.Store.UpdateDevice(ctx, id, name, brand, state)
+	deviceUpdated, err := s.Store.PatchDevice(ctx, id, name, brand, state)
 	if err != nil {
 		return store.Device{}, err
 	}
@@ -72,30 +72,31 @@ func (s *DeviceService) GetDeviceByID(ctx context.Context, id int32) (store.Devi
 }
 
 func (s *DeviceService) GetAllDevices(ctx context.Context, brand string, state store.DeviceState) ([]store.Device, error) {
+
 	if brand != "" && state != "" {
-		return s.Store.GetDevicesByBrandAndState(ctx, brand, state)
+		devices, err := s.Store.GetDevicesByBrandAndState(ctx, brand, state)
+		if err != nil {
+			return nil, err
+		}
+		return devices, nil
 	} else if brand != "" {
-		return s.Store.GetDevicesByBrand(ctx, brand)
+		devices, err := s.Store.GetDevicesByBrand(ctx, brand)
+		if err != nil {
+			return nil, err
+		}
+		return devices, nil
 	} else if state != "" {
-		return s.Store.GetDevicesByState(ctx, state)
+		devices, err := s.Store.GetDevicesByState(ctx, state)
+		if err != nil {
+			return nil, err
+		}
+		return devices, nil
 	}
-	return s.Store.GetAllDevices(ctx)
-}
-
-func (s *DeviceService) GetDevicesByBrand(ctx context.Context, brand string) ([]store.Device, error) {
-	device, err := s.Store.GetDevicesByBrand(ctx, brand)
+	devices, err := s.Store.GetAllDevices(ctx)
 	if err != nil {
-		return []store.Device{}, ErrDeviceNotFound
+		return nil, err
 	}
-	return device, nil
-}
-
-func (s *DeviceService) GetDevicesByState(ctx context.Context, state store.DeviceState) ([]store.Device, error) {
-	device, err := s.Store.GetDevicesByState(ctx, state)
-	if err != nil {
-		return []store.Device{}, ErrDeviceNotFound
-	}
-	return device, nil
+	return devices, nil
 }
 
 func (s *DeviceService) DeleteDevice(ctx context.Context, id int32) (int32, error) {

@@ -175,35 +175,3 @@ func TestGetAllDevices(t *testing.T) {
 		assert.Len(t, devices, 3)
 	})
 }
-
-func TestGetDevicesByBrand(t *testing.T) {
-	ctx := context.Background()
-	Store := mockstore.NewMockDeviceStore()
-	svc := NewDeviceService(Store)
-
-	t.Run("It_should_be_able_to_get_devices_by_brand", func(t *testing.T) {
-		_, _ = svc.CreateDevice(ctx, "Device", "BrandY", store.DeviceStateAvailable)
-		_, _ = svc.CreateDevice(ctx, "Device2", "BrandY", store.DeviceStateAvailable)
-		_, _ = svc.CreateDevice(ctx, "Device3", "BrandZ", store.DeviceStateAvailable)
-
-		devices, err := svc.GetDevicesByBrand(ctx, "BrandY")
-		assert.NoError(t, err)
-		assert.Len(t, devices, 2)
-	})
-}
-
-func TestGetDevicesByState(t *testing.T) {
-	ctx := context.Background()
-	Store := mockstore.NewMockDeviceStore()
-	svc := NewDeviceService(Store)
-
-	t.Run("It_should_be_able_to_get_devices_by_state", func(t *testing.T) {
-		_, _ = svc.CreateDevice(ctx, "Device", "BrandY", store.DeviceStateAvailable)
-		_, _ = svc.CreateDevice(ctx, "Device2", "BrandY", store.DeviceStateInUse)
-		_, _ = svc.CreateDevice(ctx, "Device3", "BrandZ", store.DeviceStateAvailable)
-
-		devices, err := svc.GetDevicesByState(ctx, store.DeviceStateAvailable)
-		assert.NoError(t, err)
-		assert.Len(t, devices, 2)
-	})
-}
