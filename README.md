@@ -30,7 +30,7 @@ Make sure you have installed:
 ### 2️⃣ Running the Application
 1. Clone this repository:
    ```sh
-   git clone https://github.com/your-user/device-api.git
+   git clone https://github.com/danielllmuniz/devices-api.git
    cd device-api
    ```
 
