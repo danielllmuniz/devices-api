@@ -70,7 +70,9 @@ func (m *MockDeviceStore) PatchDevice(ctx context.Context, id int32, name, brand
 	if brand != "" {
 		device.Brand = brand
 	}
-	device.State = state
+	if state != "" {
+		device.State = state
+	}
 	m.devices[id] = device
 
 	return device, nil
