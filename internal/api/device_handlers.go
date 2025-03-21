@@ -1,11 +1,13 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/danielllmuniz/devices-api/internal/jsonutils"
+	"github.com/danielllmuniz/devices-api/internal/services"
 	"github.com/danielllmuniz/devices-api/internal/store"
 	deviceValidator "github.com/danielllmuniz/devices-api/internal/validator/device"
 	"github.com/go-chi/chi/v5"
@@ -16,6 +18,12 @@ func (api *Api) handleCreateDevice(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		fmt.Println(problems)
+		if problems == nil {
+			jsonutils.EncodeJson(w, r, http.StatusBadRequest, map[string]any{
+				"error": "invalid request",
+			})
+			return
+		}
 
 		jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, problems)
 		return
@@ -114,6 +122,12 @@ func (api *Api) handleUpdateDevice(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		fmt.Println(problems)
+		if problems == nil {
+			jsonutils.EncodeJson(w, r, http.StatusBadRequest, map[string]any{
+				"error": "invalid request",
+			})
+			return
+		}
 
 		jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, problems)
 		return
@@ -128,6 +142,19 @@ func (api *Api) handleUpdateDevice(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		fmt.Println(err.Error())
+		if errors.Is(err, services.ErrDeviceInUse) {
+			jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, map[string]any{
+				"error": "device is in use, cannot update name or brand",
+			})
+			return
+		}
+
+		if errors.Is(err, services.ErrDeviceNotFound) {
+			jsonutils.EncodeJson(w, r, http.StatusNotFound, map[string]any{
+				"error": "device not found",
+			})
+			return
+		}
 		jsonutils.EncodeJson(w, r, http.StatusInternalServerError, map[string]any{
 			"error": "failed to update device, try again later",
 		})
@@ -162,7 +189,12 @@ func (api *Api) handlePatchDevice(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		fmt.Println(problems)
-
+		if problems == nil {
+			jsonutils.EncodeJson(w, r, http.StatusBadRequest, map[string]any{
+				"error": "invalid request",
+			})
+			return
+		}
 		jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, problems)
 		return
 	}
@@ -176,8 +208,21 @@ func (api *Api) handlePatchDevice(w http.ResponseWriter, r *http.Request) {
 	)
 	if err != nil {
 		fmt.Println(err.Error())
+		if errors.Is(err, services.ErrDeviceInUse) {
+			jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, map[string]any{
+				"error": "device is in use, cannot update name or brand",
+			})
+			return
+		}
+
+		if errors.Is(err, services.ErrDeviceNotFound) {
+			jsonutils.EncodeJson(w, r, http.StatusNotFound, map[string]any{
+				"error": "device not found",
+			})
+			return
+		}
 		jsonutils.EncodeJson(w, r, http.StatusInternalServerError, map[string]any{
-			"error": "failed to patch device, try again later",
+			"error": "failed to update device, try again later",
 		})
 		return
 	}
@@ -209,8 +254,21 @@ func (api *Api) handleDeleteDevice(w http.ResponseWriter, r *http.Request) {
 	id, err := api.DeviceService.DeleteDevice(r.Context(), int32(intDeviceID))
 	if err != nil {
 		fmt.Println(err.Error())
+		if errors.Is(err, services.ErrDeviceInUse) {
+			jsonutils.EncodeJson(w, r, http.StatusUnprocessableEntity, map[string]any{
+				"error": "device is in use, cannot update name or brand",
+			})
+			return
+		}
+
+		if errors.Is(err, services.ErrDeviceNotFound) {
+			jsonutils.EncodeJson(w, r, http.StatusNotFound, map[string]any{
+				"error": "device not found",
+			})
+			return
+		}
 		jsonutils.EncodeJson(w, r, http.StatusInternalServerError, map[string]any{
-			"error": "failed to delete device, try again later",
+			"error": "failed to update device, try again later",
 		})
 		return
 	}

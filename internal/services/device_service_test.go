@@ -25,6 +25,8 @@ func TestCreateDevice(t *testing.T) {
 		device, err := svc.CreateDevice(ctx, "Device A", "BrandX", store.DeviceStateInUse)
 		assert.NoError(t, err)
 		assert.Equal(t, "Device A", device.Name)
+		assert.Equal(t, "BrandX", device.Brand)
+		assert.Equal(t, store.DeviceStateInUse, device.State)
 	})
 }
 

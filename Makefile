@@ -29,8 +29,12 @@ queries_run: ## Run sqlc generate
 	cd internal/store/pgstore/ && sqlc generate -f ./sqlc.yaml
 
 ## Run tests
-test: ## Run tests
+tests: ## Run tests
 	go test ./...
+
+## Run Tests with coverage
+tests_coverage: ## Run tests with coverage
+	go test -cover ./...
 
 ## Run application
 run: ## Run application
