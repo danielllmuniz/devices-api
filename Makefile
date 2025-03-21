@@ -39,3 +39,21 @@ tests_coverage: ## Run tests with coverage
 ## Run application
 run: ## Run application
 	air -c .air.toml
+
+## Run docker compose
+up: ## Run docker compose
+	docker-compose up -d
+
+down: ## Stop docker compose
+	docker-compose down -v
+
+CONTAINER_NAME=devices-api-dev
+EXEC=docker exec -it $(CONTAINER_NAME)
+## Run migrations
+migrate: ## Run migrations
+	$(EXEC) go run ./cmd/terndotenv
+
+## Rebuild the container
+rebuild: ## Rebuild the container
+	docker-compose down -v
+	docker-compose up -d --build
