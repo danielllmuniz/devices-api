@@ -2,6 +2,7 @@ package validator
 
 import (
 	"context"
+	"fmt"
 	"regexp"
 	"strings"
 	"unicode/utf8"
@@ -47,7 +48,7 @@ func Matches(value string, rx *regexp.Regexp) bool {
 
 func InEnum(value string, options []any) bool {
 	for _, option := range options {
-		if value == option {
+		if value == fmt.Sprintf("%v", option) {
 			return true
 		}
 	}

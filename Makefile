@@ -16,9 +16,13 @@ help:
 migrate_generate: run_terndotenv ## Create a new migration with tern
 	cd $(MIGRATIONS_PATH) && tern new $(name)
 
-## Run the command go run ./cmd/terndotenv
-migrate_run: ## Run migrations with tern
+## Run migrations with tern
+migrate_run: ## Run migrations
 	go run ./cmd/terndotenv
+
+## Rollback migrations with tern - usage: make migrate_rollback steps=1
+migrate_rollback: ## Rollback migrations
+	go run ./cmd/terndotenv steps=$(steps)
 
 ## Generate code using sqlc
 queries_run: ## Run sqlc generate

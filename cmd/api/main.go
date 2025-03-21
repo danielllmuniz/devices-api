@@ -47,8 +47,15 @@ func main() {
 
 	api.BindRoutes()
 
-	if err := http.ListenAndServe(os.Getenv("API_PORT"), api.Router); err != nil {
-		panic(err)
-	}
-
+	go func() {
+		if err := http.ListenAndServe(fmt.Sprintf(
+			"%s:%s",
+			os.Getenv("API_HOST"),
+			os.Getenv("API_PORT"),
+		), api.Router); err != nil {
+			panic(err)
+		}
+	}()
+	fmt.Printf("Server running on %s:%s\n", os.Getenv("API_HOST"), os.Getenv("API_PORT"))
+	select {}
 }
