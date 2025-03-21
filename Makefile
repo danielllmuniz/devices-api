@@ -31,3 +31,7 @@ queries_run: ## Run sqlc generate
 ## Run tests
 test: ## Run tests
 	go test ./...
+
+## Run application
+run: ## Run application
+	air -c .air.toml

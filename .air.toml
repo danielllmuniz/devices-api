@@ -1,0 +1,13 @@
+[build]
+  cmd = "go test ./... && go build -o ./bin/api ./cmd/api"
+  bin = "./bin/api"
+  full_bin = "./bin/api"
+  working_dir = "."
+
+[watcher]
+  exclude_dir = ["vendor", "tmp"]
+  include_ext = ["go"]
+  exclude_ext = ["swp", "tmp"]
+
+[log]
+  clean_on_start = true

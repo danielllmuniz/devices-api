@@ -57,5 +57,6 @@ func main() {
 		}
 	}()
 	fmt.Printf("Server running on %s:%s\n", os.Getenv("API_HOST"), os.Getenv("API_PORT"))
+	fmt.Printf("Press CTRL+C to stop\n")
 	select {}
 }

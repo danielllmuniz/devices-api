@@ -3,15 +3,36 @@ services:
     image: postgres:latest
     restart: unless-stopped
     ports:
-      - ${DATABASE_PORT:-5432}:5432
+      - "${DATABASE_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: ${DATABASE_NAME:-postgres}
-      POSTGRES_USER: ${DATABASE_USER:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      POSTGRES_DB:       "${DATABASE_NAME:-postgres}"
+      POSTGRES_USER:     "${DATABASE_USER:-postgres}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD:-postgres}"
     volumes:
       - db:/var/lib/postgresql/data
+
+  # ---- Go Application Service ----
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev 
+    container_name: devices-api-dev
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      ENV: "development"
+      API_HOST: "0.0.0.0"
+      API_PORT: "8000"
+      DATABASE_HOST: db
+      DATABASE_PORT: "${DATABASE_PORT:-5432}"
+      DATABASE_NAME: "${DATABASE_NAME:-postgres}"
+      DATABASE_USER: "${DATABASE_USER:-postgres}"
+      DATABASE_PASSWORD: "${DATABASE_PASSWORD:-postgres}"
 
 volumes:
   db:
     driver: local
-    
