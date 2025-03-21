@@ -24,7 +24,7 @@ type Device struct {
 type DeviceStore interface {
 	CreateDevice(ctx context.Context, name, brand string, state DeviceState) (Device, error)
 	UpdateDevice(ctx context.Context, id int32, name, brand string, state DeviceState) (Device, error)
-	PatchDevice(ctx context.Context, id int32, name, brand, state string) (Device, error)
+	PatchDevice(ctx context.Context, id int32, name, brand string, state DeviceState) (Device, error)
 	GetDeviceByID(ctx context.Context, id int32) (Device, error)
 	GetAllDevices(ctx context.Context) ([]Device, error)
 	GetDevicesByBrand(ctx context.Context, brand string) ([]Device, error)
