@@ -7,8 +7,7 @@ package pgstore
 import (
 	"database/sql/driver"
 	"fmt"
-
-	"github.com/jackc/pgx/v5/pgtype"
+	"time"
 )
 
 type DeviceState string
@@ -55,9 +54,9 @@ func (ns NullDeviceState) Value() (driver.Value, error) {
 }
 
 type Device struct {
-	ID        int32            `json:"id"`
-	Name      string           `json:"name"`
-	Brand     string           `json:"brand"`
-	State     DeviceState      `json:"state"`
-	CreatedAt pgtype.Timestamp `json:"created_at"`
+	ID        int32       `json:"id"`
+	Name      string      `json:"name"`
+	Brand     string      `json:"brand"`
+	State     DeviceState `json:"state"`
+	CreatedAt time.Time   `json:"created_at"`
 }

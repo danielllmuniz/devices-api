@@ -3,6 +3,7 @@ package pgstore
 import (
 	"context"
 
+	"github.com/danielllmuniz/devices-api/internal/store"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -18,32 +19,42 @@ func NewPGDeviceStore(db *pgxpool.Pool) *PGDeviceStore {
 	}
 }
 
-func (s *PGDeviceStore) CreateDevice(ctx context.Context, name, brand string, state DeviceState) (Device, error) {
+func (s *PGDeviceStore) CreateDevice(ctx context.Context, name, brand string, state store.DeviceState) (store.Device, error) {
 	device, err := s.Queries.CreateDevice(ctx, CreateDeviceParams{
 		Name:  name,
 		Brand: brand,
-		State: state,
+		State: DeviceState(state),
 	})
 	if err != nil {
-		return Device{}, err
+		return store.Device{}, err
 	}
-	return device, nil
+	return store.Device{
+		ID:    device.ID,
+		Name:  device.Name,
+		Brand: device.Brand,
+		State: store.DeviceState(device.State),
+	}, nil
 }
 
-func (s *PGDeviceStore) UpdateDevice(ctx context.Context, id int32, name, brand string, state DeviceState) (Device, error) {
+func (s *PGDeviceStore) UpdateDevice(ctx context.Context, id int32, name, brand string, state store.DeviceState) (store.Device, error) {
 	device, err := s.Queries.UpdateDevice(ctx, UpdateDeviceParams{
 		ID:    id,
 		Name:  name,
 		Brand: brand,
-		State: state,
+		State: DeviceState(state),
 	})
 	if err != nil {
-		return Device{}, err
+		return store.Device{}, err
 	}
-	return device, nil
+	return store.Device{
+		ID:    device.ID,
+		Name:  device.Name,
+		Brand: device.Brand,
+		State: store.DeviceState(device.State),
+	}, nil
 }
 
-func (s *PGDeviceStore) PatchDevice(ctx context.Context, id int32, name, brand string, state DeviceState) (Device, error) {
+func (s *PGDeviceStore) PatchDevice(ctx context.Context, id int32, name, brand string, state store.DeviceState) (store.Device, error) {
 	device, err := s.Queries.PatchDevice(ctx, PatchDeviceParams{
 		ID:      id,
 		Column2: name,
@@ -51,54 +62,79 @@ func (s *PGDeviceStore) PatchDevice(ctx context.Context, id int32, name, brand s
 		Column4: state,
 	})
 	if err != nil {
-		return Device{}, err
+		return store.Device{}, err
 	}
-	return device, nil
+	return store.Device{
+		ID:    device.ID,
+		Name:  device.Name,
+		Brand: device.Brand,
+		State: store.DeviceState(device.State),
+	}, nil
 }
 
-func (s *PGDeviceStore) GetDeviceByID(ctx context.Context, id int32) (Device, error) {
+func (s *PGDeviceStore) GetDeviceByID(ctx context.Context, id int32) (store.Device, error) {
 	device, err := s.Queries.GetDeviceById(ctx, id)
 	if err != nil {
-		return Device{}, err
+		return store.Device{}, err
 	}
-	return device, nil
+	return store.Device{
+		ID:    device.ID,
+		Name:  device.Name,
+		Brand: device.Brand,
+		State: store.DeviceState(device.State),
+	}, nil
 }
 
-func (s *PGDeviceStore) GetAllDevices(ctx context.Context) ([]Device, error) {
+func (s *PGDeviceStore) GetAllDevices(ctx context.Context) ([]store.Device, error) {
 	devices, err := s.Queries.GetAllDevices(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	var result []Device
+	var result []store.Device
 	for _, d := range devices {
-		result = append(result, d)
+		result = append(result, store.Device{
+			ID:    d.ID,
+			Name:  d.Name,
+			Brand: d.Brand,
+			State: store.DeviceState(d.State),
+		})
 	}
 	return result, nil
 }
 
-func (s *PGDeviceStore) GetDevicesByBrand(ctx context.Context, brand string) ([]Device, error) {
+func (s *PGDeviceStore) GetDevicesByBrand(ctx context.Context, brand string) ([]store.Device, error) {
 	devices, err := s.Queries.GetDevicesByBrand(ctx, brand)
 	if err != nil {
 		return nil, err
 	}
 
-	var result []Device
+	var result []store.Device
 	for _, d := range devices {
-		result = append(result, d)
+		result = append(result, store.Device{
+			ID:    d.ID,
+			Name:  d.Name,
+			Brand: d.Brand,
+			State: store.DeviceState(d.State),
+		})
 	}
 	return result, nil
 }
 
-func (s *PGDeviceStore) GetDevicesByState(ctx context.Context, state DeviceState) ([]Device, error) {
-	devices, err := s.Queries.GetDevicesByState(ctx, state)
+func (s *PGDeviceStore) GetDevicesByState(ctx context.Context, state store.DeviceState) ([]store.Device, error) {
+	devices, err := s.Queries.GetDevicesByState(ctx, DeviceState(state))
 	if err != nil {
 		return nil, err
 	}
 
-	var result []Device
+	var result []store.Device
 	for _, d := range devices {
-		result = append(result, d)
+		result = append(result, store.Device{
+			ID:    d.ID,
+			Name:  d.Name,
+			Brand: d.Brand,
+			State: store.DeviceState(d.State),
+		})
 	}
 	return result, nil
 }
