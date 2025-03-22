@@ -16,7 +16,7 @@ import (
 func TestHandleCreateDevice(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 
 	tests := []struct {
@@ -111,7 +111,7 @@ func TestHandleCreateDevice(t *testing.T) {
 func TestHandleGetDevice(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 	ctx := context.Background()
 
@@ -170,7 +170,7 @@ func TestHandleGetDevice(t *testing.T) {
 func TestHandleGetAllDevices(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 	ctx := context.Background()
 
@@ -255,7 +255,7 @@ func TestHandleGetAllDevices(t *testing.T) {
 func TestHandleUpdateDevice(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 	ctx := context.Background()
 
@@ -353,7 +353,7 @@ func TestHandleUpdateDevice(t *testing.T) {
 func TestHandlePatchDevice(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 	ctx := context.Background()
 
@@ -451,7 +451,7 @@ func TestHandlePatchDevice(t *testing.T) {
 func TestHandleDeleteDevice(t *testing.T) {
 	mock := mockstore.NewMockDeviceStore()
 	api := Api{
-		DeviceService: *services.NewDeviceService(mock),
+		DeviceService: services.NewDeviceService(mock),
 	}
 	ctx := context.Background()
 

@@ -7,5 +7,5 @@ import (
 
 type Api struct {
 	Router        *chi.Mux
-	DeviceService services.DeviceService
+	DeviceService *services.DeviceService
 }

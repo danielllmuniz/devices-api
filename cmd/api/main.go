@@ -42,7 +42,7 @@ func main() {
 	// START SERVER
 	app := api.Api{
 		Router:        chi.NewMux(),
-		DeviceService: *services.NewDeviceService(pgstore.NewPGDeviceStore(pool)),
+		DeviceService: services.NewDeviceService(pgstore.NewPGDeviceStore(pool)),
 	}
 
 	app.BindRoutes()
