@@ -19,6 +19,10 @@ func TestMockDeviceStore(t *testing.T) {
 		assert.Equal(t, "Device A", device.Name)
 		assert.Equal(t, "BrandX", device.Brand)
 		assert.Equal(t, store.DeviceState("available"), device.State)
+
+		device, err = mockStore.CreateDevice(ctx, "Device A", "BrandX", "123")
+		assert.Error(t, err)
+		assert.Empty(t, device)
 	})
 
 	t.Run("GetDeviceByID", func(t *testing.T) {
@@ -34,14 +38,22 @@ func TestMockDeviceStore(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "Device A+", updated.Name)
 		assert.Equal(t, store.DeviceState("inactive"), updated.State)
+
+		updated, err = mockStore.UpdateDevice(ctx, 10, "", "", "")
+		assert.Error(t, err)
+		assert.Empty(t, updated)
 	})
 
 	t.Run("PatchDevice", func(t *testing.T) {
-		patched, err := mockStore.PatchDevice(ctx, 1, "", "BrandY", "in-use")
+		patched, err := mockStore.PatchDevice(ctx, 1, "Device A+", "BrandY", "in-use")
 		assert.NoError(t, err)
 		assert.Equal(t, "BrandY", patched.Brand)
 		assert.Equal(t, "Device A+", patched.Name)
 		assert.Equal(t, store.DeviceState("in-use"), patched.State)
+
+		patched, err = mockStore.PatchDevice(ctx, 10, "", "", "")
+		assert.Error(t, err)
+		assert.Empty(t, patched)
 	})
 
 	t.Run("GetAllDevices", func(t *testing.T) {
@@ -63,6 +75,12 @@ func TestMockDeviceStore(t *testing.T) {
 		assert.Len(t, devices, 1)
 	})
 
+	t.Run("GetDevicesByStateAndBrand", func(t *testing.T) {
+		devices, err := mockStore.GetDevicesByBrandAndState(ctx, "BrandX", "inactive")
+		assert.NoError(t, err)
+		assert.Len(t, devices, 1)
+	})
+
 	t.Run("DeleteDevice", func(t *testing.T) {
 		deletedID, err := mockStore.DeleteDevice(ctx, 1)
 		assert.NoError(t, err)
@@ -70,5 +88,9 @@ func TestMockDeviceStore(t *testing.T) {
 
 		_, err = mockStore.GetDeviceByID(ctx, 1)
 		assert.Error(t, err)
+
+		deletedID, err = mockStore.DeleteDevice(ctx, 10)
+		assert.Error(t, err)
+		assert.Equal(t, int32(0), deletedID)
 	})
 }

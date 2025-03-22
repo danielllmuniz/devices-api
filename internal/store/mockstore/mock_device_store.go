@@ -25,6 +25,10 @@ func (m *MockDeviceStore) CreateDevice(ctx context.Context, name, brand string, 
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
+	if state != store.DeviceStateAvailable && state != store.DeviceStateInUse && state != store.DeviceStateInactive {
+		return store.Device{}, errors.New("invalid state")
+	}
+
 	device := store.Device{
 		ID:    m.nextID,
 		Name:  name,
