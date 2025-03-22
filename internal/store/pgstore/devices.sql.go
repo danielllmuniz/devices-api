@@ -100,12 +100,12 @@ func (q *Queries) GetDeviceById(ctx context.Context, id int32) (Device, error) {
 const getDevicesByBrand = `-- name: GetDevicesByBrand :many
 SELECT id, name, brand, state, created_at
 FROM devices
-WHERE brand = $1
+WHERE LOWER(brand) = LOWER($1)
 ORDER BY created_at DESC
 `
 
-func (q *Queries) GetDevicesByBrand(ctx context.Context, brand string) ([]Device, error) {
-	rows, err := q.db.Query(ctx, getDevicesByBrand, brand)
+func (q *Queries) GetDevicesByBrand(ctx context.Context, lower string) ([]Device, error) {
+	rows, err := q.db.Query(ctx, getDevicesByBrand, lower)
 	if err != nil {
 		return nil, err
 	}
@@ -133,17 +133,17 @@ func (q *Queries) GetDevicesByBrand(ctx context.Context, brand string) ([]Device
 const getDevicesByBrandAndState = `-- name: GetDevicesByBrandAndState :many
 SELECT id, name, brand, state, created_at
 FROM devices
-WHERE brand = $1 AND state = $2
+WHERE LOWER(brand) = LOWER($1) AND state = $2
 ORDER BY created_at DESC
 `
 
 type GetDevicesByBrandAndStateParams struct {
-	Brand string      `json:"brand"`
+	Lower string      `json:"lower"`
 	State DeviceState `json:"state"`
 }
 
 func (q *Queries) GetDevicesByBrandAndState(ctx context.Context, arg GetDevicesByBrandAndStateParams) ([]Device, error) {
-	rows, err := q.db.Query(ctx, getDevicesByBrandAndState, arg.Brand, arg.State)
+	rows, err := q.db.Query(ctx, getDevicesByBrandAndState, arg.Lower, arg.State)
 	if err != nil {
 		return nil, err
 	}

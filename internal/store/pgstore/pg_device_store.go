@@ -148,7 +148,7 @@ func (s *PGDeviceStore) GetDevicesByState(ctx context.Context, state store.Devic
 
 func (s *PGDeviceStore) GetDevicesByBrandAndState(ctx context.Context, brand string, state store.DeviceState) ([]store.Device, error) {
 	devices, err := s.Queries.GetDevicesByBrandAndState(ctx, GetDevicesByBrandAndStateParams{
-		Brand: brand,
+		Lower: brand,
 		State: DeviceState(state),
 	})
 	if err != nil {

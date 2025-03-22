@@ -28,11 +28,10 @@ WHERE id = $1;
 SELECT id, name, brand, state, created_at
 FROM devices
 ORDER BY created_at DESC;
-
 -- name: GetDevicesByBrand :many
 SELECT id, name, brand, state, created_at
 FROM devices
-WHERE brand = $1
+WHERE LOWER(brand) = LOWER($1)
 ORDER BY created_at DESC;
 
 -- name: GetDevicesByState :many
@@ -44,7 +43,7 @@ ORDER BY created_at DESC;
 -- name: GetDevicesByBrandAndState :many
 SELECT id, name, brand, state, created_at
 FROM devices
-WHERE brand = $1 AND state = $2
+WHERE LOWER(brand) = LOWER($1) AND state = $2
 ORDER BY created_at DESC;
 
 -- name: DeleteDevice :one
