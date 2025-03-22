@@ -40,19 +40,19 @@ func main() {
 	}
 
 	// START SERVER
-	api := api.Api{
+	app := api.Api{
 		Router:        chi.NewMux(),
 		DeviceService: *services.NewDeviceService(pgstore.NewPGDeviceStore(pool)),
 	}
 
-	api.BindRoutes()
+	app.BindRoutes()
 
 	go func() {
 		if err := http.ListenAndServe(fmt.Sprintf(
 			"%s:%s",
 			os.Getenv("API_HOST"),
 			os.Getenv("API_PORT"),
-		), api.Router); err != nil {
+		), app.Router); err != nil {
 			panic(err)
 		}
 	}()
