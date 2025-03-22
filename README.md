@@ -53,16 +53,17 @@ Now the API will be running at `http://localhost:8000` 🚀
 
 ## 📜 Available Endpoints
 ### Devices (`/devices`)
-| Method  | Route                         | Description |
-|---------|-------------------------------|-------------|
-| `POST`  | `/devices`                    | Create a device |
-| `PUT`   | `/devices/{id}`               | Update a device |
-| `PATCH` | `/devices/{id}`               | Apply a patch to a device |
-| `GET`   | `/devices`                    | Get all devices |
-| `GET`   | `/devices?brand=brandName`    | Get devices by brand |
-| `GET`   | `/devices?state=stateName`    | Get devices by state |
-| `GET`   | `/devices/{id}`               | Get a device by ID |
-| `DELETE`| `/devices/{id}`               | Delete a device |
+{payload} = {name string, brand string, state enum{'available', 'in-use', 'inactive'}}
+| Method  | Route                       |Payload  | Description |
+|---------|-----------------------------|---------|-------------|
+| `POST`  | `/devices`                  |{payload}| Create a device |
+| `PUT`   | `/devices/{id}`             |{payload}| Update a device |
+| `PATCH` | `/devices/{id}`             |{payload}| Apply a patch to a device |
+| `GET`   | `/devices`                  |         | Get all devices |
+| `GET`   | `/devices?brand=brandName`  |         | Get devices by brand |
+| `GET`   | `/devices?state=stateName`  |         | Get devices by state |
+| `GET`   | `/devices/{id}`             |         | Get a device by ID |
+| `DELETE`| `/devices/{id}`             |         | Delete a device |
 
 ## 🛠 Technologies Used
 - **Golang** - Main programming language of the project
