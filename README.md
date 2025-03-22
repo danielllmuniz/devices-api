@@ -18,6 +18,8 @@ The API was developed using:
 - **Tern** (migration manager for SQL databases)
 - **SQLC** (safe and efficient SQL query generator for Go)
 
+Additionally, a Postman collection is available in the root path of the repository (`devices-api.postman_collection.json`) to facilitate testing the API endpoints.
+
 ## 🚀 How to Run the Project
 The API runs inside a Docker container and can be easily started using the `Makefile`.
 
@@ -51,6 +53,12 @@ Make sure you have installed:
 
 Now the API will be running at `http://localhost:8000` 🚀
 
+### ℹ️ Additional Commands
+The `Makefile` includes several commands to simplify project management. You can view all available commands by running:
+```sh
+make help
+```
+
 ## 📜 Available Endpoints
 ### Devices (`/devices`)
 {payload} = {name string, brand string, state enum{'available', 'in-use', 'inactive'}}
@@ -71,6 +79,4 @@ Now the API will be running at `http://localhost:8000` 🚀
 - **Tern** - Database migration management
 - **SQLC** - SQL query code generation for Go
 - **Docker** - Application containerization
-
-## 📄 License
-This project is licensed under the MIT License.
+- **Postman** - API testing and documentation (collection available in the root path) Device API
